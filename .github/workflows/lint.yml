@@ -1,0 +1,21 @@
+name: Lint ros2_control
+on:
+  pull_request:
+
+jobs:
+  ament_lint:
+    name: ament_${{ matrix.linter }}
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:bionic
+    strategy:
+      fail-fast: false
+      matrix:
+          linter: [copyright, cppcheck, cpplint, uncrustify, xmllint]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ros-tooling/setup-ros@master
+    - uses: ros-tooling/action-ros-lint@master
+      with:
+        linter: ${{ matrix.linter }}
+        package-name: realtime_tools
